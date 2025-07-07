@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace TextRPG.Item
 {
-    internal class Item : IComponents
+    internal class Item : IComponent
     {
         public string? name { get; set; }
         public string? description { get; set; }
@@ -38,8 +38,4 @@ namespace TextRPG.Item
         }
     }
 
-    internal class ItemList
-    {
-        public Item[] items;
-    }
 }

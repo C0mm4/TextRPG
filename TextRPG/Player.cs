@@ -8,7 +8,7 @@ using TextRPG.Item;
 
 namespace TextRPG
 {
-    internal class Player : IComponents
+    internal class Player : IComponent
     {
         StatusData status;
         public List<Item.Item> equips;
@@ -23,7 +23,7 @@ namespace TextRPG
             status.atk = 10;
             status.def = 5;
             status.currHP = status.maxHP = 100;
-            status.gold = 1500;
+            status.gold = 900000;
 
             inventory = new();
             equips = new();
@@ -75,15 +75,15 @@ namespace TextRPG
                 }
             }
 
-            for(; i < inventory.Count; i++)
+            for(; i < inventory.Count + equips.Count; i++)
             {
                 if (isEquipScene)
                 {
-                    inventory[i].PrintinEquipScene(i + 1);
+                    inventory[i-equips.Count].PrintinEquipScene(i + 1);
                 }
                 else
                 {
-                    inventory[i].Print();
+                    inventory[i-equips.Count].Print();
                 }
             }
 

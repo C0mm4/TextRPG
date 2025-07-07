@@ -62,10 +62,17 @@ namespace TextRPG.Item
             {
                 if(Game.player.Gold >= items[index].gold)
                 {
-                    isBuy[index] = true;
-                    Game.player.BuyItem(items[index]);
+                    if (isBuy[index])
+                    {
+                        Console.WriteLine($"품절된 아이템입니다.");
+                    }
+                    else
+                    {
+                        isBuy[index] = true;
+                        Game.player.BuyItem(items[index]);
 
-                    Console.WriteLine($"아이템을 구매하였습니다.");
+                        Console.WriteLine($"아이템을 구매하였습니다.");
+                    }
                 }
                 else
                 {

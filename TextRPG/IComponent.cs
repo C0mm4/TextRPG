@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace TextRPG
 {
-    internal interface IComponents
+    internal interface IComponent
     {
         public void Print();
     }
