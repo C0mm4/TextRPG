@@ -36,8 +36,6 @@ namespace TextRPG.Item
             // 경로 조합 (items.json이 실행 파일 옆에 있다고 가정)
             string filePath = Path.Combine(basePath, "itemData.json");
 
-            Console.WriteLine($"[디버그] 파일 경로: {filePath}");
-
             if (!File.Exists(filePath))
             {
                 Console.WriteLine("itemData.json 파일을 찾을 수 없습니다.");
@@ -58,7 +56,7 @@ namespace TextRPG.Item
             }
             catch (Exception ex)
             {
-                Console.WriteLine("❌ JSON 파일 파싱 중 오류 발생: " + ex.Message);
+                Console.WriteLine("JSON 파일 파싱 중 오류 발생: " + ex.Message);
             }
         }
 

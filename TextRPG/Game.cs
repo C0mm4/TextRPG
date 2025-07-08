@@ -145,7 +145,7 @@ namespace TextRPG
             currentDungeon.RunDungeon();
         }
 
-        public void DungeonCreatea()
+        public void DungeonCreate()
         {
             Dungeon easy = new("쉬운 던전", 5, 1000);
             dungeons.Add(easy);
