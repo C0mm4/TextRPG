@@ -9,33 +9,40 @@ namespace TextRPG.Item
 {
     internal class Item : IComponent
     {
-        public string? name { get; set; }
-        public string? description { get; set; }
-        public string? flavorText { get; set; }
-        public int gold { get; set; }
-        public int atk { get; set; }
-        public int def { get; set; }
-        public int hp { get; set; }
+        public required string Name { get; set; }
+        public required string Description { get; set; }
+        public required string FlavorText { get; set; }
+        public int Gold { get; set; }
+        public int Atk { get; set; }
+        public int Def { get; set; }
+        public int HP { get; set; }
+
+        public int Type {  get; set; }
 
         public void Print()
         {
-            Console.WriteLine($"- {name} \t\t| {description}\t\t| {flavorText}");
+            Console.WriteLine($"- {Name} \t\t| {Description}\t\t| {FlavorText}");
         }
 
         public void PrintinEquipScene(int index)
         {
-            Console.WriteLine($"- {index} {name} \t\t| {description}\t\t| {flavorText}");
+            Console.WriteLine($"- {index} {Name} \t\t| {Description}\t\t| {FlavorText}");
         }
 
         public void PrintEquip()
         {
-            Console.WriteLine($"- [E] {name} \t\t| {description}\t\t| {flavorText}");
+            Console.WriteLine($"- [E] {Name} \t\t| {Description}\t\t| {FlavorText}");
         }
 
         public void PrintEquipinEquipScene(int index)
         {
-            Console.WriteLine($"- {index} [E] {name} \t\t| {description}\t\t| {flavorText}");
+            Console.WriteLine($"- {index} [E] {Name} \t\t| {Description}\t\t| {FlavorText}");
         }
+    }
+
+    internal class ItemWrapper() 
+    {
+        public required List<Item> Items { get; set; }
     }
 
 }

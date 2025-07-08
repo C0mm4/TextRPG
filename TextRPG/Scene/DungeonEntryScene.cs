@@ -3,38 +3,37 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using TextRPG.Item;
 
 namespace TextRPG.Scene
 {
-    internal class ShopScene : IScene
+    internal class DungeonEntryScene : IScene
     {
         public void PrintScene()
         {
             Console.Clear();
-            Console.WriteLine($"{IScene.AnsiColor.Yellow}상점{IScene.AnsiColor.Reset}");
-            Console.WriteLine("필요한 아이템을 얻을 수 있는 상점입니다.\n");
-            Console.WriteLine($"[보유 골드]\n{IScene.AnsiColor.Magenta}{Game.player.Gold}G{IScene.AnsiColor.Reset}\n");
-            
-            ItemManager.Instance.Print(false);
+            Console.WriteLine($"{IScene.AnsiColor.Yellow}던전입장{IScene.AnsiColor.Reset}");
+            Console.WriteLine("이곳에서 던전으로 들어가기전 활동을 할 수 있습니다.\n");
 
+            for (int i = 0; i < 3; i++) 
+            {
+                Dungeon dungeon = Game.Instance.dungeons[i];
+                Console.WriteLine($"{IScene.AnsiColor.Magenta}{i+1}. {IScene.AnsiColor.Reset}{dungeon.name} \t | 방어력 {IScene.AnsiColor.Magenta}{dungeon.requireDef}{IScene.AnsiColor.Reset} 이상 권장");
+            }
 
-            Console.WriteLine("1. 아이템 구매");
-            Console.WriteLine("2. 아이템 판매\n");
+            Console.WriteLine($"{IScene.AnsiColor.Magenta}0. {IScene.AnsiColor.Reset}나가기\n");
 
-            Console.WriteLine("0. 나가기\n");
+            Console.Write("원하시는 행동을 입력해주세요\n>>");
 
-            Console.Write("원하시는 행동을 입력해주세요.\n>>");
             try
             {
                 int select = int.Parse(Console.ReadLine()!);
                 switch (select)
                 {
                     case 1:
-                        Game.Instance.SceneChange(Game.SceneState.ItemBuy);
-                        break;
                     case 2:
-                        Game.Instance.SceneChange(Game.SceneState.ItemSell);
+                    case 3:
+                        Game.Instance.DungeonPlay(select);
+                        Game.Instance.SceneChange(Game.SceneState.DungeonEnd);
                         break;
                     case 0:
                         Game.Instance.PopScene();

@@ -9,39 +9,57 @@ namespace TextRPG.Item
 {
     internal class ItemManager
     {
-        private static ItemManager instance;
-        public static ItemManager Instance { get { return instance; } }
+        private  static ItemManager? _instance;
+        public static ItemManager Instance 
+        { 
+            get 
+            { 
+                if(_instance == null)
+                {
+                    _instance = new ItemManager();
+                }
+                return _instance;
+            } 
+        }
 
         Item[] items;
         bool[] isBuy;
 
         public ItemManager()
         {
-            if(instance == null)
+            if(_instance == null)
             {
-                instance = this;
+                _instance = this;
             }
+            string basePath = AppContext.BaseDirectory;
 
-            string json = @"[
-            { ""name"": ""수련자 갑옷"", ""description"": ""방어력 +5"" , ""flavorText"" : ""수련에 도움을 주는 갑옷입니다"", 
-                ""gold"" : 1000, ""atk"" : 0, ""def"" : 5, ""hp"" : 0},
-                { ""name"": ""무쇠 갑옷"", ""description"": ""방어력 +9"" , ""flavorText"" : ""무쇠로 만들어져 튼튼한 갑옷입니다."", 
-                ""gold"" : 2500, ""atk"" : 0, ""def"" : 9, ""hp"" : 0},
-                { ""name"": ""스파르타의 갑옷"", ""description"": ""방어력 +15"" , ""flavorText"" : ""스파르타의 전사들이 사용했다는 전설의 갑옷입니다."", 
-                ""gold"" : 3500, ""atk"" : 0, ""def"" : 15, ""hp"" : 0},
-                { ""name"": ""낡은 검"", ""description"": ""공격력 +2"" , ""flavorText"" : ""쉽게 볼 수 있는 낡은 검입니다."", 
-                ""gold"" : 600, ""atk"" : 2, ""def"" : 0, ""hp"" : 0},
-                { ""name"": ""청동 도끼"", ""description"": ""공격력 +5"" , ""flavorText"" : ""어디선가 사용됐던거 같은 도끼입니다."", 
-                ""gold"" : 1500, ""atk"" : 5, ""def"" : 0, ""hp"" : 0},
-                { ""name"": ""스파르타의 창"", ""description"": ""공격력 +7"" , ""flavorText"" : ""스파르타의 전사들이 사용했다는 전설의 창입니다."", 
-                ""gold"" : 5000, ""atk"" : 7, ""def"" : 0, ""hp"" : 0}
-        ]";
-            items = JsonSerializer.Deserialize<List<Item>>(json).ToArray();
+            // 경로 조합 (items.json이 실행 파일 옆에 있다고 가정)
+            string filePath = Path.Combine(basePath, "itemData.json");
 
-            isBuy = new bool[items.Length];
-            Array.Fill(isBuy, false);
+            Console.WriteLine($"[디버그] 파일 경로: {filePath}");
 
+            if (!File.Exists(filePath))
+            {
+                Console.WriteLine("itemData.json 파일을 찾을 수 없습니다.");
+                return;
+            }
+            try
+            {
+                string json = File.ReadAllText(filePath); 
+                ItemWrapper? wrapper = JsonSerializer.Deserialize<ItemWrapper>(json);
+                if(wrapper != null)
+                    items = wrapper.Items.ToArray();
 
+                if(items != null)
+                {
+                    isBuy = new bool[items.Length];
+                    Array.Fill(isBuy, false);
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("❌ JSON 파일 파싱 중 오류 발생: " + ex.Message);
+            }
         }
 
         public void Print(bool isBuyScene)
@@ -49,18 +67,18 @@ namespace TextRPG.Item
             Console.WriteLine("[아이템 목록");
             for(int i = 0; i < items.Length; i++)
             {
-                Console.WriteLine($"- {(isBuyScene ? (i+1).ToString() : "")} {items[i].name} \t|{items[i].description} \t|{items[i].flavorText} \t|{(isBuy[i] ? "구매 완료" : items[i].gold.ToString())}");
+                Console.WriteLine($"- {(isBuyScene ? (i+1).ToString() : "")} {items[i].Name} \t|{items[i].Description} \t|{items[i].FlavorText} \t|{(isBuy[i] ? "구매 완료" : items[i].Gold.ToString())}");
 
             }
             Console.WriteLine();
         }
 
-        public void buyItem(int index)
+        public void BuyItem(int index)
         {
             index--;
             if (index >= 0 && index < items.Length)
             {
-                if(Game.player.Gold >= items[index].gold)
+                if(Game.player.Gold >= items[index].Gold)
                 {
                     if (isBuy[index])
                     {
@@ -80,7 +98,10 @@ namespace TextRPG.Item
                 }
 
             }
-            Thread.Sleep(1000);
+            else
+            {
+                Console.WriteLine("잘못된 입력입니다.");
+            }
         }
     }
 }

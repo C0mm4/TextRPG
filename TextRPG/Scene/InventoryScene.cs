@@ -25,7 +25,7 @@ namespace TextRPG.Scene
             Console.Write("원하시는 행동을 입력해주세요.\n>>");
             try
             {
-                int select = int.Parse(Console.ReadLine());
+                int select = int.Parse(Console.ReadLine()!);
                 switch (select)
                 {
                     case 1:
@@ -35,12 +35,16 @@ namespace TextRPG.Scene
                         Game.Instance.PopScene();
                         break;
                     default:
+                        Console.WriteLine("잘못된 입력입니다.");
+                        Thread.Sleep(1000);
                         PrintScene();
                         break;
                 }
             }
             catch
             {
+                Console.WriteLine("잘못된 입력입니다.");
+                Thread.Sleep(1000);
                 PrintScene();
             }
         }

@@ -8,10 +8,15 @@ namespace TextRPG.Scene
 {
     internal interface IScene
     {
+        /// <summary>
+        /// 씬의 출력과 입력을 담당하는 메소드.
+        /// </summary>
         public void PrintScene();
 
-
-        protected static class AnsiColor
+        /// <summary>
+        /// 콘솔의 텍스트 출력 색상을 변경하는 내부 클래스
+        /// </summary>
+        public static class AnsiColor
         {
             public const string Reset = "\u001b[0m";
             public const string Black = "\u001b[30m";

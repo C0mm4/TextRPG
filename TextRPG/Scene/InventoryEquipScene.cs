@@ -26,7 +26,7 @@ namespace TextRPG.Scene
             Console.Write(">>> ");
             try
             {
-                int select = int.Parse(Console.ReadLine());
+                int select = int.Parse(Console.ReadLine()!);
                 if (select == 0)
                 {
                     Game.Instance.PopScene();
@@ -36,8 +36,11 @@ namespace TextRPG.Scene
             }
             catch
             {
+                Thread.Sleep(1000);
                 PrintScene();
             }
+
+            Thread.Sleep(1000);
         }
     }
 }

@@ -23,19 +23,23 @@ namespace TextRPG.Scene
             Console.Write(">>> ");
             try
             {
-                int answer = int.Parse(Console.ReadLine());
+                int answer = int.Parse(Console.ReadLine()!);
                 switch (answer)
                 {
                     case 0:
                         Game.Instance.PopScene();
                         break;
                     default:
+                        Console.WriteLine("잘못된 입력입니다.");
+                        Thread.Sleep(1000);
                         PrintScene();
                         break;
                 }
             }
             catch
             {
+                Console.WriteLine("잘못된 입력입니다.");
+                Thread.Sleep(1000);
                 PrintScene();
             }
         }

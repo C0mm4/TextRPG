@@ -10,24 +10,40 @@ namespace TextRPG
 {
     internal class Game
     {
-        private static Game? instance;
-        public static Game? Instance { get { return instance; } }
+        private static Game? _instance;
+        public static Game Instance 
+        { 
+            get 
+            { 
+                if(_instance == null)
+                    _instance = new Game();
+                return _instance; 
+            }
+        }
 
         private Stack<IScene> sceneStack;
         IScene? currentScene;
-        public enum SceneState { Title, Lobby, Status, Inventory, EquipControl, Shop, ItemBuy, Rest,}
-        SceneState state;
+        public enum SceneState { Title, Lobby, DungeonEntry, DungeonEnd, 
+            Status, Inventory, EquipControl, Shop, ItemBuy, ItemSell, Rest,}
+
+        private SceneState state;
 
         public static Player player = new Player();
 
+        public Random random = new Random();
+
+        public List<Dungeon> dungeons = new();
+        public Dungeon currentDungeon;
+        public bool isClear;
+
         public Game()
         {
-            if(instance == null)
+            if(_instance == null)
             {
-                instance = this;
+                _instance = this;
             }
             new ItemManager();
-
+            DungeonCreatea();
 
             sceneStack = new Stack<IScene>();
             state = SceneState.Title;
@@ -39,6 +55,10 @@ namespace TextRPG
             }
         }
 
+        /// <summary>
+        /// 게임의 Scene을 변경하는 메소드. 변경되는 Scene에 따라 currentScene을 변경
+        /// </summary>
+        /// <param name="state">New Scene State</param>
         public void SceneChange(SceneState state)
         {
             IScene? newScene = null;
@@ -50,6 +70,14 @@ namespace TextRPG
 
                 case SceneState.Lobby:
                     newScene = new LobbyScene();
+                    break;
+
+                case SceneState.DungeonEntry:
+                    newScene = new DungeonEntryScene();
+                    break;
+
+                case SceneState.DungeonEnd:
+                    newScene = new DungeonEndScene();
                     break;
 
                 case SceneState.Status:
@@ -71,6 +99,14 @@ namespace TextRPG
                 case SceneState.ItemBuy:
                     newScene = new ItemBuyScene();
                     break;
+
+                case SceneState.ItemSell:
+                    newScene = new ItemSellScene();
+                    break;
+
+                case SceneState.Rest:
+                    newScene = new RestScene();
+                    break;
             }
 
             if (newScene != null)
@@ -83,6 +119,9 @@ namespace TextRPG
             }
         }
 
+        /// <summary>
+        /// 현재 씬을 종료하고 이전 씬으로 돌아가는 메소드
+        /// </summary>
         public void PopScene()
         {
             if (sceneStack.Count > 0)
@@ -98,6 +137,22 @@ namespace TextRPG
                 {
                     currentScene = null;
                 }
+        }
+
+        public void DungeonPlay(int level)
+        {
+            currentDungeon = dungeons[--level];
+            currentDungeon.RunDungeon();
+        }
+
+        public void DungeonCreatea()
+        {
+            Dungeon easy = new("쉬운 던전", 5, 1000);
+            dungeons.Add(easy);
+            Dungeon normal = new("일반 던전", 11, 1700);
+            dungeons.Add(normal);
+            Dungeon hard = new("어려운 던전", 17, 2500);
+            dungeons.Add(hard);
         }
     }
 }
