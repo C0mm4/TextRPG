@@ -2,13 +2,15 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace TextRPG.Item
 {
-    internal class Item : IComponent
+    internal class Item : IComponent, IComparable<Item>
     {
+        public int Id {  get; set; }
         public required string Name { get; set; }
         public required string Description { get; set; }
         public required string FlavorText { get; set; }
@@ -18,6 +20,7 @@ namespace TextRPG.Item
         public int HP { get; set; }
 
         public int Type {  get; set; }
+
 
         public void Print()
         {
@@ -37,6 +40,15 @@ namespace TextRPG.Item
         public void PrintEquipinEquipScene(int index)
         {
             Console.WriteLine($"- {index} [E] {Name} \t\t| {Description}\t\t| {FlavorText}");
+        }
+
+        public int CompareTo(Item? other)
+        {
+            if(other != null)
+            {
+                return Id.CompareTo( other.Id );
+            }
+            return 0;
         }
     }
 

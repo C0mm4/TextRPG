@@ -9,5 +9,6 @@ namespace TextRPG
     internal interface IComponent
     {
         public void Print();
+
     }
 }

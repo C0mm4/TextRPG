@@ -45,6 +45,7 @@ namespace TextRPG.Scene
                         Game.Instance.SceneChange(Game.SceneState.Rest);
                         break;
                     case 0:
+                        GameSaveSystem.Instance.SaveGame();
                         Game.Instance.PopScene();
                         break;
                     default:

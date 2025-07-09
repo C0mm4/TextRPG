@@ -21,9 +21,11 @@ namespace TextRPG.Scene
             {
                 if (!isSet)
                 {
-                    useHealth = Game.Instance.random.Next(20, 36) - (Game.player.GetDef() - Game.Instance.currentDungeon.requireDef);
-                    getGold = Game.Instance.currentDungeon.gold;
+                    useHealth = Game.Instance.random.Next(20, 36) - (int)(Game.player.GetDef() - Game.Instance.currentDungeon.requireDef);
+                    getGold = (int)(Game.Instance.currentDungeon.gold * (1 + (Game.Instance.random.Next((int)Game.player.GetAtk(), (int)Game.player.GetAtk()*2))*0.01f));
                     isSet = true;
+
+                    Game.player.GetExp();
                 }
                 Console.WriteLine($"{IScene.AnsiColor.Yellow}축하합니다!{IScene.AnsiColor.Reset}");
                 Console.WriteLine($"{IScene.AnsiColor.Cyan}{Game.Instance.currentDungeon.name}{IScene.AnsiColor.Reset}을 클리어하였습니다!");
@@ -41,7 +43,7 @@ namespace TextRPG.Scene
                 {
                     if (!isSet)
                     {
-                        useHealth = (Game.Instance.random.Next(20, 36) - (Game.player.GetDef() - Game.Instance.currentDungeon.requireDef)) / 2;
+                        useHealth = (Game.Instance.random.Next(20, 36) - (int)(Game.player.GetDef() - Game.Instance.currentDungeon.requireDef)) / 2;
                         getGold = 0;
                         isSet = true;
                     }
@@ -51,7 +53,7 @@ namespace TextRPG.Scene
             }
 
             Console.WriteLine($"\n[탐험결과]");
-            Console.WriteLine($"체력 {IScene.AnsiColor.Magenta}{Game.player.GetCurrHP}{IScene.AnsiColor.Reset} -> {IScene.AnsiColor.Magenta}{Game.player.GetCurrHP() - useHealth}{IScene.AnsiColor.Reset}");
+            Console.WriteLine($"체력 {IScene.AnsiColor.Magenta}{Game.player.GetCurrHP()}{IScene.AnsiColor.Reset} -> {IScene.AnsiColor.Magenta}{Game.player.GetCurrHP() - useHealth}{IScene.AnsiColor.Reset}");
             Console.WriteLine($"체력 {IScene.AnsiColor.Magenta}{Game.player.Gold}{IScene.AnsiColor.Reset} G -> {IScene.AnsiColor.Magenta}{Game.player.Gold + getGold}{IScene.AnsiColor.Reset} G");
 
             Console.WriteLine("\n0. 나가기");

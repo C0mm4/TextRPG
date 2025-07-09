@@ -23,7 +23,7 @@ namespace TextRPG.Item
         }
 
         Item[] items;
-        bool[] isBuy;
+        public bool[] isBuy;
 
         public ItemManager()
         {
@@ -100,6 +100,11 @@ namespace TextRPG.Item
             {
                 Console.WriteLine("잘못된 입력입니다.");
             }
+        }
+
+        public Item? GetItemByID(int id)
+        {
+            return Array.Find<Item>(items, item => item.Id == id);
         }
     }
 }

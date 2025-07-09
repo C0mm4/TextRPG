@@ -6,18 +6,19 @@ using System.Threading.Tasks;
 
 namespace TextRPG
 {
-    internal struct StatusData
+    internal class StatusData
     {
-        public int level;
-        public string name;
-        public string classType;
-        public int atk;
-        public int itemAtk;
-        public int def;
-        public int itemDef;
-        public int currHP;
-        public int maxHP;
-        public int itemMaxHP;
-        public int gold;
+        public int level { get; set; }
+        public int exp { get; set; }
+        public string name { get; set; }
+        public string classType { get; set; }
+        public float atk { get; set; }
+        public float itemAtk { get; set; }
+        public float def { get; set; }
+        public float itemDef { get; set; }
+        public int currHP { get; set; }
+        public int maxHP { get; set; }
+        public int itemMaxHP { get; set; }
+        public int gold { get; set; }
     } 
 }

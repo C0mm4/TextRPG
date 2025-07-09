@@ -46,7 +46,7 @@ namespace TextRPG
 
         private void DungeonClear()
         {
-            useHealth = Game.Instance.random.Next(20, 36) - (Game.player.GetDef() - requireDef);
+            useHealth = Game.Instance.random.Next(20, 36) - (int)(Game.player.GetDef() - requireDef);
 
             if (Game.player.GetCurrHP() >= useHealth)
             {

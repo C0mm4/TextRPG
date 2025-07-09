@@ -12,11 +12,14 @@ namespace TextRPG
 {
     internal class Player : IComponent
     {
-        StatusData status;
-        public List<Item.Item> equips;
-        public List<Item.Item> inventory;
+        StatusData status = new();
+        public AutoSortList<Item.Item> equips;
+        public AutoSortList<Item.Item> inventory;
 
         public int Gold { get { return status.gold; } }
+
+        public int[] expTable = { 1, 2, 3, 4, 0 };
+
 
         public Player()
         {
@@ -28,7 +31,7 @@ namespace TextRPG
             status.currHP -= 50;
             status.itemMaxHP = 0;
             status.itemAtk = 0;
-            status.gold = 900000;
+            status.gold = 1500;
 
             inventory = new();
             equips = new();
@@ -43,7 +46,7 @@ namespace TextRPG
 
         public void Print()
         {
-            Console.WriteLine($"Lv. {status.level}");
+            Console.WriteLine($"Lv. {status.level} EXP : {(float)status.exp/expTable[status.level-1]*100:0.##}%");
             Console.WriteLine($"{status.name} / {status.classType}");
             Console.Write($"ATK : {status.atk + status.itemAtk} ");
             if(status.itemAtk > 0)
@@ -199,12 +202,35 @@ namespace TextRPG
 
         public int GetCurrHP() { return status.currHP; }
         public int GetMaxHP() { return status.maxHP; }
-        public int GetDef() {  return status.def; }
+        public float GetDef() {  return status.def; }
+        public float GetAtk() {  return status.atk; }
 
 
         public void IncreaseGold(int value) { status.gold += value; }
         public void DecreaseGold(int value) { status.gold -= value; }
         public void IncreaseHP(int value) { status.currHP += value; }
         public void DecreaseHP(int value) { status.currHP -= value; }
+        public StatusData GetStatus() { return status; }
+        public void SetStatus(StatusData data) { status = data; }
+        public void GetExp()
+        {
+            if (expTable[status.level - 1] != 0)
+            {
+                status.exp++;
+                if(status.exp >= expTable[status.level - 1])
+                {
+                    LevelUp();
+                }
+            }
+        }
+
+        public void LevelUp()
+        {
+            status.level++;
+            status.atk += 0.5f;
+            status.def++;
+            status.exp = 0;
+            Console.WriteLine("레벨 업!");
+        }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using TextRPG.Item;
@@ -23,7 +24,7 @@ namespace TextRPG
 
         private Stack<IScene> sceneStack;
         IScene? currentScene;
-        public enum SceneState { Title, Lobby, DungeonEntry, DungeonEnd, 
+        public enum SceneState { Title, Intro, Lobby, DungeonEntry, DungeonEnd, 
             Status, Inventory, EquipControl, Shop, ItemBuy, ItemSell, Rest,}
 
         private SceneState state;
@@ -43,7 +44,7 @@ namespace TextRPG
                 _instance = this;
             }
             new ItemManager();
-            DungeonCreatea();
+            DungeonCreate();
 
             sceneStack = new Stack<IScene>();
             state = SceneState.Title;
@@ -65,7 +66,11 @@ namespace TextRPG
             switch (state)
             {
                 case SceneState.Title:
-                    newScene = new StartScene();
+                    newScene = new TitleScene();
+                    break;
+
+                case SceneState.Intro:
+                    newScene = new IntroScene();
                     break;
 
                 case SceneState.Lobby:
@@ -111,7 +116,7 @@ namespace TextRPG
 
             if (newScene != null)
             {
-                if (currentScene != null)
+                if (currentScene != null && currentScene.GetType().Name != "IntroScene")
                 {
                     sceneStack.Push(currentScene);
                 }
@@ -132,11 +137,6 @@ namespace TextRPG
             {
                 currentScene = null;
             }
-            if(currentScene != null)
-                if(currentScene.GetType().Name == "StartScene")
-                {
-                    currentScene = null;
-                }
         }
 
         public void DungeonPlay(int level)
@@ -153,6 +153,11 @@ namespace TextRPG
             dungeons.Add(normal);
             Dungeon hard = new("어려운 던전", 17, 2500);
             dungeons.Add(hard);
+        }
+
+        public void StartGame()
+        {
+            player = new Player();
         }
     }
 }

@@ -7,7 +7,7 @@ using System.Xml.Linq;
 
 namespace TextRPG.Scene
 {
-    internal class StartScene : IScene
+    internal class IntroScene : IScene
     {
 
         public void PrintScene()
@@ -15,7 +15,6 @@ namespace TextRPG.Scene
             Console.Clear();
             Console.WriteLine($"{IScene.AnsiColor.Magenta}스파르타 마을{IScene.AnsiColor.Reset}에 오신 여러분 환영합니다.");
             
-
 
             string? answer = "";
             string? name;
@@ -37,6 +36,7 @@ namespace TextRPG.Scene
 
             Console.WriteLine($"\n스파르타 마을에 오신 것을 환영합니다. {name} 님\n");
             Game.player.SetName(name);
+            GameSaveSystem.Instance.InitizliaeGameData();
             Game.Instance.SceneChange(Game.SceneState.Lobby);
         }
     }
